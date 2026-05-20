@@ -4,6 +4,7 @@ import { matchmakingRouter } from "./routes/matchmaking";
 import { walletRouter } from "./routes/wallet";
 import { progressionRouter } from "./routes/progression";
 import { featuresRouter } from "./routes/features";
+import { shopRouter } from "./routes/shop";
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use("/matchmaking", matchmakingRouter);
 app.use("/wallet", walletRouter);
 app.use("/progression", progressionRouter);
 app.use("/features", featuresRouter);
+app.use("/shop", shopRouter);
 
 const port = process.env.PORT ? Number(process.env.PORT) : 4000;
 app.listen(port, () => {

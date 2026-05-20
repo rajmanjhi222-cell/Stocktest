@@ -22,6 +22,7 @@ npm run dev
 ```
 
 ## API endpoints (MVP)
+> Note: shop and wallet are original BattleForge systems (not cloned proprietary implementations).
 - `GET /health`
 - `POST /lobby/join`
 - `POST /matchmaking/enqueue`
@@ -42,3 +43,11 @@ This MVP intentionally avoids cloning any proprietary game assets/mechanics. It 
 ## Planning docs
 - `docs/MVP_PLAN.md`
 - `docs/FEATURE_PARITY_MATRIX.md`
+
+- `GET /wallet/:playerId`
+- `POST /wallet/kyc`
+- `POST /wallet/deposit`
+- `POST /wallet/withdraw`
+- `GET /shop/items`
+- `GET /shop/inventory/:playerId`
+- `POST /shop/purchase`
