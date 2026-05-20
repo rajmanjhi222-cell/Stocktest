@@ -38,3 +38,7 @@ This MVP intentionally avoids cloning any proprietary game assets/mechanics. It 
 ## IP/Copyright safety
 - This project does **not** copy proprietary game code/assets/maps/characters.
 - Feature design follows generic battle-royale patterns with original naming and implementation.
+
+## Planning docs
+- `docs/MVP_PLAN.md`
+- `docs/FEATURE_PARITY_MATRIX.md`
