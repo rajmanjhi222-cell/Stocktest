@@ -1,18 +1,19 @@
 # BattleForge MVP (Battle Royale Inspired)
 
-This repository contains the MVP scaffold for an original battle-royale inspired game project (inspired by the fast-session style of popular BR games, without copying IP).
+This repository contains the MVP scaffold for an original battle-royale inspired game project (fast-session BR style, without copying proprietary IP).
 
-## MVP Scope (Phase 1)
-- Basic lobby API
-- Basic matchmaking queue API (in-memory for MVP)
-- Player wallet ledger API skeleton (no real payment processing yet)
-- Original BR-inspired feature catalog API
-- Progression levels and rank tier API
+## MVP Scope
+- Lobby join + matchmaking queue
+- Wallet (deposit/withdraw + KYC state) for MVP simulation
+- Shop catalog + purchase + inventory
+- Progression levels + tier lookup
+- Ranked season + match result rating updates
+- Player loadout presets
 - Health check endpoint
 
 ## Tech
 - Node.js + Express + TypeScript backend
-- Future client planned in Unity
+- Future realtime authoritative server + Unity client planned
 
 ## Quick start
 ```bash
@@ -21,33 +22,40 @@ npm install
 npm run dev
 ```
 
-## API endpoints (MVP)
-> Note: shop and wallet are original BattleForge systems (not cloned proprietary implementations).
+## API endpoints (current MVP)
+> Note: systems are original BattleForge implementations (not proprietary clones).
+
 - `GET /health`
 - `POST /lobby/join`
 - `POST /matchmaking/enqueue`
-- `POST /wallet/deposit-intent`
-- `POST /wallet/withdraw-request`
-- `GET /features/catalog`
-- `GET /progression/levels`
-- `GET /progression/tier?score=2500`
 
-## Important
-This MVP intentionally avoids cloning any proprietary game assets/mechanics. It provides an original foundation that can evolve into a production game.
-
-
-## IP/Copyright safety
-- This project does **not** copy proprietary game code/assets/maps/characters.
-- Feature design follows generic battle-royale patterns with original naming and implementation.
-
-## Planning docs
-- `docs/MVP_PLAN.md`
-- `docs/FEATURE_PARITY_MATRIX.md`
-
+### Wallet
 - `GET /wallet/:playerId`
 - `POST /wallet/kyc`
 - `POST /wallet/deposit`
 - `POST /wallet/withdraw`
+
+### Shop
 - `GET /shop/items`
 - `GET /shop/inventory/:playerId`
 - `POST /shop/purchase`
+
+### Progression & Features
+- `GET /features/catalog`
+- `GET /progression/levels`
+- `GET /progression/tier?score=2500`
+
+### Advanced systems
+- `GET /ranked/season`
+- `GET /ranked/:playerId`
+- `POST /ranked/report`
+- `GET /loadout/:playerId`
+- `POST /loadout/save`
+
+## IP/Copyright safety
+- No proprietary map layouts, character designs, assets, or branded names are copied.
+- Genre-level mechanics are implemented with original naming and implementation details.
+
+## Planning docs
+- `docs/MVP_PLAN.md`
+- `docs/FEATURE_PARITY_MATRIX.md`

@@ -35,5 +35,17 @@ export const gameplayFeatures: GameplayFeature[] = [
     name: "Seasonal Rank Track",
     category: "progression",
     description: "Competitive ladder with seasonal reset and rewards."
+  },
+  {
+    id: "mod-weapon-platform",
+    name: "Modular Weapon Platform",
+    category: "combat",
+    description: "Attachment-driven recoil and handling build paths."
+  },
+  {
+    id: "ability-synergy",
+    name: "Ability Synergy Kits",
+    category: "progression",
+    description: "Role-based tactical/passive pairing for squad compositions."
   }
 ];
