@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", service: "battleforge-backend" });
+  res.json({ status: "ok", service: "stormarena-backend" });
 });
 
 app.use("/lobby", lobbyRouter);
@@ -26,5 +26,5 @@ app.use("/loadout", loadoutRouter);
 
 const port = process.env.PORT ? Number(process.env.PORT) : 4000;
 app.listen(port, () => {
-  console.log(`BattleForge backend running on :${port}`);
+  console.log(`StormArena backend running on :${port}`);
 });

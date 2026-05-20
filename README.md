@@ -1,4 +1,4 @@
-# BattleForge MVP (Battle Royale Inspired)
+# StormArena MVP (Battle Royale Inspired)
 
 This repository contains the MVP scaffold for an original battle-royale inspired game project (fast-session BR style, without copying proprietary IP).
 
@@ -23,7 +23,7 @@ npm run dev
 ```
 
 ## API endpoints (current MVP)
-> Note: systems are original BattleForge implementations (not proprietary clones).
+> Note: systems are original StormArena implementations (not proprietary clones).
 
 - `GET /health`
 - `POST /lobby/join`

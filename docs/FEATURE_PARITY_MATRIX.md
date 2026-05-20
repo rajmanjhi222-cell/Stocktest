@@ -1,13 +1,13 @@
 # Feature Parity Matrix (Original BR Blend)
 
-This matrix maps **genre-level** battle-royale capabilities inspired by mainstream BR titles into an **original, non-infringing** BattleForge design.
+This matrix maps **genre-level** battle-royale capabilities inspired by mainstream BR titles into an **original, non-infringing** StormArena design.
 
 ## Status legend
 - **Done**: Present in current MVP backend APIs/services.
 - **In Progress**: Partially scaffolded, needs persistence/realtime/game-server logic.
 - **Planned**: Not yet implemented in current codebase.
 
-| Capability Area | Genre Expectation (High-Level) | BattleForge Original Design | Status | Current Backend Mapping |
+| Capability Area | Genre Expectation (High-Level) | StormArena Original Design | Status | Current Backend Mapping |
 |---|---|---|---|---|
 | Lobby & Identity | Player joins lobby, basic profile context | Lobby join with playerId + nickname validation | Done | `POST /lobby/join` |
 | Match Queue | Queue by team mode (solo/duo/squad) | In-memory queue with position and queue size | Done | `POST /matchmaking/enqueue` + `queue.ts` |
