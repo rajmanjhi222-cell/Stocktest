@@ -7,6 +7,8 @@ import { featuresRouter } from "./routes/features";
 import { shopRouter } from "./routes/shop";
 import { rankedRouter } from "./routes/ranked";
 import { loadoutRouter } from "./routes/loadout";
+import { modesRouter } from "./routes/modes";
+import { eventsRouter } from "./routes/events";
 
 const app = express();
 app.use(express.json());
@@ -23,6 +25,8 @@ app.use("/features", featuresRouter);
 app.use("/shop", shopRouter);
 app.use("/ranked", rankedRouter);
 app.use("/loadout", loadoutRouter);
+app.use("/modes", modesRouter);
+app.use("/events", eventsRouter);
 
 const port = process.env.PORT ? Number(process.env.PORT) : 4000;
 app.listen(port, () => {

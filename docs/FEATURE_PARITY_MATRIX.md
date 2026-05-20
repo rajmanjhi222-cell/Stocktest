@@ -30,6 +30,8 @@ This matrix maps **genre-level** battle-royale capabilities inspired by mainstre
 | Anti-Cheat | Abuse prevention and fairness | Server-authoritative checks + anomaly flags | Planned | To be added (`trust-service`) |
 | Custom Rooms | Private match hosting | Room templates + access codes | Planned | To be added (`room-service`) |
 | Clan/Social | Group progression/social identity | Clan creation + contribution points | In Progress | progression unlock placeholder |
+| Mode Rotation | Multiple core/arcade playlists | Solo/Duo/Squad + Arena mode config service | Done | `GET /modes/list` |
+| Live Events | Time-boxed challenges/rewards | Live event calendar feed with rewards | Done | `GET /events/live` |
 
 ## Copyright/IP Safety Rules Applied
 1. No proprietary map layouts, character names, branded UI, or asset reuse.

@@ -59,3 +59,7 @@ npm run dev
 ## Planning docs
 - `docs/MVP_PLAN.md`
 - `docs/FEATURE_PARITY_MATRIX.md`
+
+### Modes & Events
+- `GET /modes/list`
+- `GET /events/live`
