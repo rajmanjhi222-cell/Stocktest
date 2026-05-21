@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TradeVerse — Simulation + Options Analytics</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-soft: #11182a;
+      --card: #0e1526;
+      --text: #e7ecff;
+      --muted: #9cabd0;
+      --primary: #6f8bff;
+      --secondary: #2de2e6;
+      --ok: #31d67b;
+      --warn: #ffcc5f;
+      --danger: #ff6a88;
+      --border: rgba(132, 151, 207, 0.22);
+      --glow: 0 0 0 1px rgba(111, 139, 255, 0.25), 0 12px 40px rgba(45, 226, 230, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 500px at 20% -10%, rgba(111, 139, 255, 0.2), transparent 60%),
+        radial-gradient(900px 500px at 90% 5%, rgba(45, 226, 230, 0.14), transparent 55%),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    .container { width: min(1150px, 92vw); margin-inline: auto; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      background: rgba(7, 11, 20, 0.72);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: conic-gradient(from 220deg, var(--secondary), var(--primary), #9f7bff, var(--secondary));
+      box-shadow: 0 0 30px rgba(111, 139, 255, 0.5);
+    }
+
+    .links {
+      display: flex;
+      gap: 20px;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+
+    .links a { color: inherit; text-decoration: none; }
+
+    .cta-row { display: flex; gap: 10px; }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: #101a31;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(130deg, var(--primary), #8e63ff 65%, var(--secondary));
+      color: #08111f;
+    }
+
+    .hero {
+      padding: 70px 0 30px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.2vw, 3.7rem);
+      line-height: 1.1;
+      margin: 0 0 16px;
+    }
+
+    .hero p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      max-width: 60ch;
+    }
+
+    .pill-track {
+      margin-top: 26px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: #0b1428;
+      white-space: nowrap;
+    }
+
+    .pill-inner {
+      display: inline-flex;
+      gap: 14px;
+      padding: 10px;
+      animation: ticker 22s linear infinite;
+    }
+
+    .pill {
+      background: #12203d;
+      color: #d7e4ff;
+      border: 1px solid rgba(111, 139, 255, 0.35);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.83rem;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .terminal {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #101a32, #0a1120);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--glow);
+    }
+
+    .terminal-top {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #ff6a88; }
+    .dot.y { background: #ffd166; }
+    .dot.g { background: #2de2e6; }
+
+    .chart {
+      border-radius: 12px;
+      height: 280px;
+      border: 1px solid rgba(132, 151, 207, 0.15);
+      background: linear-gradient(180deg, rgba(17, 25, 44, 0.88), rgba(11, 18, 30, 0.9));
+      overflow: hidden;
+      position: relative;
+    }
+
+    .line {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(to right, transparent 0 45px, rgba(111, 139, 255, 0.08) 46px 47px),
+                  repeating-linear-gradient(to bottom, transparent 0 38px, rgba(111, 139, 255, 0.07) 39px 40px);
+    }
+
+    .spark {
+      position: absolute;
+      width: 180%;
+      height: 100%;
+      left: -40%;
+      top: 0;
+    }
+
+    .spark path {
+      stroke: url(#grad);
+      stroke-width: 3;
+      fill: none;
+      stroke-linecap: round;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: draw 3s ease forwards infinite alternate;
+    }
+
+    @keyframes draw {
+      0% { stroke-dashoffset: 980; }
+      100% { stroke-dashoffset: 80; }
+    }
+
+    .stats {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: #0c162c;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .subtle { color: var(--muted); font-size: 0.82rem; }
+    .big { font-size: 1.2rem; font-weight: 700; }
+
+    section { padding: 56px 0; }
+
+    .section-head { margin-bottom: 22px; }
+    .section-head h2 { margin: 0 0 8px; font-size: clamp(1.45rem, 2.8vw, 2.2rem); }
+    .section-head p { margin: 0; color: var(--muted); }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .feature {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #0f1931, #0a1224);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 150px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-4px);
+      border-color: rgba(45, 226, 230, 0.5);
+    }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .plan ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: #d6e2ff;
+    }
+
+    .plan li { margin: 7px 0; }
+
+    .plan.free { border-color: rgba(49, 214, 123, 0.45); }
+    .plan.pro { border-color: rgba(111, 139, 255, 0.5); box-shadow: var(--glow); }
+
+    .layout {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      min-height: 350px;
+    }
+
+    .sidebar {
+      background: #0b1222;
+      border-right: 1px solid var(--border);
+      padding: 14px;
+    }
+
+    .sidebar .item {
+      padding: 10px;
+      border-radius: 10px;
+      color: var(--muted);
+      margin: 4px 0;
+      background: transparent;
+    }
+
+    .sidebar .item.active {
+      background: #142446;
+      color: #e8eeff;
+    }
+
+    .content {
+      background: linear-gradient(180deg, #0f1831, #0a1223);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    footer {
+      padding: 30px 0 44px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .pricing { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      .content { grid-template-columns: 1fr; }
+      .links { display: none; }
+    }
+
+    @media (max-width: 620px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .cta-row .btn { padding: 9px 11px; font-size: 0.84rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><span class="brand-badge"></span>TradeVerse</div>
+      <nav class="links">
+        <a href="#products">Products</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Plans</a>
+        <a href="#dashboard">Dashboard</a>
+      </nav>
+      <div class="cta-row">
+        <button class="btn">Login</button>
+        <button class="btn primary">Start Free</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="products">
+      <div>
+        <h1>One place for <br/>Virtual Trading + Options Intelligence</h1>
+        <p>
+          This is an original, from-scratch demo inspired by modern Indian trading platforms.
+          It combines mock stock competitions, strategy builders, Greeks dashboards, live option-chain style panels,
+          and subscription-based pro tools in a single product landing page.
+        </p>
+        <div class="cta-row">
+          <button class="btn primary">Create Contest</button>
+          <button class="btn">Explore Analytics</button>
+        </div>
+
+        <div class="pill-track" aria-label="market ticker animation">
+          <div class="pill-inner">
+            <span class="pill">NIFTY 50 +1.28%</span>
+            <span class="pill">BANKNIFTY +0.76%</span>
+            <span class="pill">VIX -2.04%</span>
+            <span class="pill">PCR 1.12</span>
+            <span class="pill">Max Pain 22400</span>
+            <span class="pill">OI Build-up: Bullish</span>
+            <span class="pill">NIFTY 50 +1.28%</span>
+            <span class="pill">BANKNIFTY +0.76%</span>
+            <span class="pill">VIX -2.04%</span>
+            <span class="pill">PCR 1.12</span>
+            <span class="pill">Max Pain 22400</span>
+            <span class="pill">OI Build-up: Bullish</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal" aria-label="animated chart mock">
+        <div class="terminal-top">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <div class="chart">
+          <div class="line"></div>
+          <svg class="spark" viewBox="0 0 1000 300" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#2de2e6"/>
+                <stop offset="50%" stop-color="#6f8bff"/>
+                <stop offset="100%" stop-color="#9f7bff"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,230 C80,150 130,180 200,140 C290,85 340,140 430,120 C540,95 600,185 690,155 C760,133 810,55 900,95 C945,115 975,85 1000,60"></path>
+          </svg>
+        </div>
+        <div class="stats">
+          <div class="card"><div class="subtle">Virtual P&L</div><div class="big" style="color:var(--ok)">+₹18,420</div></div>
+          <div class="card"><div class="subtle">Strategy Win Rate</div><div class="big">67.4%</div></div>
+          <div class="card"><div class="subtle">Total Open Interest</div><div class="big">1.48B</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="section-head">
+        <h2>Feature stack combining both worlds</h2>
+        <p>Gamified market learning + pro-grade option analytics (conceptual feature blueprint).</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature"><h3>Paper Trading Arena</h3><p class="subtle">Create leagues, daily contests, leaderboard prizes, and private rooms for friends or classrooms.</p></article>
+        <article class="feature"><h3>Option Chain Heatmap</h3><p class="subtle">Visualize CE/PE OI, IV skew, and put-call dynamics with quick expiry switching.</p></article>
+        <article class="feature"><h3>Strategy Builder</h3><p class="subtle">Build and compare spreads with payoff charts, breakeven zones, and risk metadata.</p></article>
+        <article class="feature"><h3>Greeks & Volatility</h3><p class="subtle">Monitor delta, gamma, theta, vega, and IV percentile in one panel.</p></article>
+        <article class="feature"><h3>Backtesting Lab</h3><p class="subtle">Replay historical sessions with slippage, commissions, and execution assumptions.</p></article>
+        <article class="feature"><h3>Alerts + Screeners</h3><p class="subtle">Get alerts for OI spikes, premium crush, unusual IV moves, and key levels.</p></article>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-head">
+        <h2>Free + Paid capabilities in one roadmap</h2>
+      </div>
+      <div class="pricing">
+        <article class="card plan free">
+          <h3>Free</h3>
+          <p class="subtle">Ideal for beginners and practice users.</p>
+          <ul>
+            <li>Virtual portfolio and basic contests</li>
+            <li>Limited option chain snapshots</li>
+            <li>Basic strategy templates</li>
+            <li>Community leaderboard access</li>
+          </ul>
+        </article>
+        <article class="card plan pro">
+          <h3>Pro / Paid</h3>
+          <p class="subtle">Advanced tools for serious traders.</p>
+          <ul>
+            <li>Realtime analytics with deeper data granularity</li>
+            <li>Advanced strategy matrix + Greeks overlays</li>
+            <li>Historical backtesting modules</li>
+            <li>Priority alerts, API access, and premium support</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="dashboard">
+      <div class="section-head">
+        <h2>Unified dashboard layout</h2>
+        <p>Left navigation + multi-panel workspace similar to modern trading products.</p>
+      </div>
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="item active">Overview</div>
+          <div class="item">Contests</div>
+          <div class="item">Option Chain</div>
+          <div class="item">Strategy Builder</div>
+          <div class="item">Backtests</div>
+          <div class="item">Alerts</div>
+          <div class="item">Billing</div>
+        </aside>
+        <div class="content">
+          <div class="card"><div class="subtle">Top Strategy</div><div class="big">Iron Condor</div><p class="subtle">Expected POP 71%</p></div>
+          <div class="card"><div class="subtle">Live Contest Rank</div><div class="big">#12 / 4,928</div><p class="subtle">+₹4,820 today</p></div>
+          <div class="card"><div class="subtle">OI Shift Signal</div><div class="big" style="color:var(--warn)">Watch 22600 CE</div><p class="subtle">Heavy writing detected</p></div>
+          <div class="card"><div class="subtle">Risk Meter</div><div class="big" style="color:var(--danger)">Moderate-High</div><p class="subtle">Delta exposure rising</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      Concept demo UI. Build your own branding, APIs, and legal content before production use.
+    </div>
+  </footer>
+</body>
+</html>
